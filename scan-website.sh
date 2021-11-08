@@ -1,9 +1,9 @@
 website_url=$1
 scan_text=$2
-retries=${$3:-"3"}
-backoff_multiplier=${$4:-"2"}
+max_attempts=$3
+backoff_multiplier=$4
 
-for i in {1..$retries}; do
+for i in {1..$max_attempts}; do
     status_code=$(curl --silent --location --head --output /dev/null --write-out "%{http_code}" "${website_url}")
 
     if [ "${status_code}" != "200" ]; then

@@ -10,12 +10,14 @@ inputs:
   scan-for-text:
     description: "Specify the string that has to be scanned"
     required: true
-  retries:
-    description: "Number of tries, default 3"
+  max-attempts:
+    description: "Number of attempts"
     required: false
-  backoff_multiplier:
-    description: "Number of seconds to sleep, will be multiplied by current try, default 2"
+    default: 3
+  backoff-multiplier:
+    description: "Number of seconds to increase backoff between attempts"
     required: false
+    default: 2
 runs:
   using: "composite"
   steps:
@@ -23,5 +25,5 @@ runs:
       shell: bash
     - run: chmod +x ${{ github.action_path }}/scan-website.sh
       shell: bash
-    - run: ${{ github.action_path }}/scan-website.sh ${{ inputs.web-url }} ${{ inputs.scan-for-text }}
+    - run: ${{ github.action_path }}/scan-website.sh ${{ inputs.web-url }} ${{ inputs.scan-for-text }} ${{ inputs.max-attempts }} ${{ inputs.backoff-multiplier }}
       shell: bash
